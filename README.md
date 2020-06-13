@@ -59,5 +59,6 @@ POST request for creating new user:
 
 ## Key Colors
 
-Off-White: F8F1FF
-Lavender: A46DDB
+Off-White: ![#F8F1FF](https://placehold.it/15/F8F1FF/000000?text=+) `#F8F1FF`
+
+Lavender: ![#A46DDB](https://placehold.it/15/A46DDB/000000?text=+) `#A46DDB`
