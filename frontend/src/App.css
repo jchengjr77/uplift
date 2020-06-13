@@ -51,8 +51,23 @@
   color: #f8f1ff !important;
 }
 
-.TopRightButton:focus { 
+.TopRightButton:focus {
   box-shadow: none !important;
+}
+
+.LinkText {
+  background: none !important;
+  border: none;
+  padding-bottom: 0;
+  font-family: arial, sans-serif;
+  color: #069;
+  text-decoration: underline;
+  cursor: pointer;
+  outline: none;
+}
+
+.LinkText:focus {
+  outline: none;
 }
 
 .BodyContainer {
@@ -102,6 +117,51 @@
   font-size: min(5vw, 5vh);
   min-width: 100%;
   min-height: 20vh;
+}
+
+.HomePageContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 30vh;
+  width: max(30vw, 30vh);
+}
+
+.InputButtons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-top: 2vh;
+}
+
+.InputLeftButton {
+  min-width: 10vw;
+}
+
+.InputRightButton {
+  min-width: 10vw;
+}
+
+.InspirationButton {
+  color: #c2b3d2 !important;
+  border-color: #c2b3d2 !important;
+}
+
+.InspirationButton:active,
+.InspirationButton:hover {
+  background-color: #c2b3d2 !important;
+  color: #f8f1ff !important;
+}
+
+.InspirationButton:focus {
+  box-shadow: none !important;
+}
+
+.HiddenText {
+  font-style: italic;
+  font-size: min(4vw, 4vh);
+  font-weight: 300;
+  color: #c2b3d2;
 }
 
 .FriendsBox {
