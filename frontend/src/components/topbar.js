@@ -29,7 +29,6 @@ function useWindowDimensions() {
 
 function TopBar() {
   const { height, width } = useWindowDimensions();
-  console.log(height, width);
   return (
     <div className="TopBar">
       <div className="LogoContainer">

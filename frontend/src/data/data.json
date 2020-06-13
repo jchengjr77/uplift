@@ -1,0 +1,49 @@
+{
+  "uid_0": {
+    "name": "John Doe",
+    "email": "johndoe@gmail.com",
+    "friends": {
+      "uid_1": true,
+      "uid_3": true,
+      "uid_11": true
+    },
+    "self-messsages": ["I like my style choices", "I'm good at coding"],
+    "other-messages": ["You have good hair", "I like the way you yell"]
+  },
+
+  "uid_1": {
+    "name": "Jane Doe",
+    "email": "janedoe@gmail.com",
+    "friends": {
+      "uid_1": true,
+      "uid_3": true,
+      "uid_11": true
+    },
+    "self-messsages": ["I like my style choices", "I'm good at coding"],
+    "other-messages": ["You have good hair", "I like the way you yell"]
+  },
+
+  "uid_3": {
+    "name": "Stu Doe",
+    "email": "janedoe@gmail.com",
+    "friends": {
+      "uid_1": true,
+      "uid_3": true,
+      "uid_11": true
+    },
+    "self-messsages": ["I like my style choices", "I'm good at coding"],
+    "other-messages": ["You have good hair", "I like the way you yell"]
+  },
+
+  "uid_11": {
+    "name": "Boo Doe",
+    "email": "janedoe@gmail.com",
+    "friends": {
+      "uid_1": true,
+      "uid_3": true,
+      "uid_11": true
+    },
+    "self-messsages": ["I like my style choices", "I'm good at coding"],
+    "other-messages": ["You have good hair", "I like the way you yell"]
+  }
+}
