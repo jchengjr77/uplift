@@ -1,11 +1,17 @@
 const express = require('express');
-const app = express();
+const bodyParser = require('body-parser');
 const fire = require('./firebase');
+const app = express();
 
 const db = fire.database();
 const auth = fire.auth();
 
 const port = 3000;
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+/* __________ Begin GET requests __________ */
 
 app.get('/', (req, res) => res.send('Hello from Uplift!'));
 
@@ -89,6 +95,48 @@ app.get('/random-message', (req, res) => {
         const randomMessageID =
             messageIDs[(messageIDs.length * Math.random()) << 0];
         return res.status(200).send(otherMessages[randomMessageID]);
+    });
+});
+
+/* __________ Begin POST requests __________ */
+
+// 'to-self' endpoint takes a self_id and a message, and writes self_messages.
+app.post('/to-self/:self_id', (req, res) => {
+    const selfID = req.params.self_id;
+    const message = req.body.message;
+    console.log(`Received selfID=${selfID}, message: ${message}`);
+    if (selfID == null) {
+        return res.status(400).send('Bad Request: self_id is not provided.');
+    }
+    if (message == null) {
+        return res.status(400).send('Bad Request: message is not provided.');
+    }
+    const messagesRef = db.ref(`/users/${selfID}/self_messages`);
+    messagesRef.push(message, (err) => {
+        if (err != null) {
+            return res.status(400).send(`Write Error: ${error}`);
+        }
+        return res.status(200).send(`Write successful. Message: ${message}`);
+    });
+});
+
+// 'to' endpoint takes a uid and a message, and writes it to other_messages.
+app.post('/to/:uid', (req, res) => {
+    const uid = req.params.uid;
+    const message = req.body.message;
+    console.log(`Received uid=${uid}, message: ${message}`);
+    if (uid == null) {
+        return res.status(400).send('Bad Request: uid is not provided.');
+    }
+    if (message == null) {
+        return res.status(400).send('Bad Request: message is not provided.');
+    }
+    const messagesRef = db.ref(`/users/${uid}/other_messages`);
+    messagesRef.push(message, (err) => {
+        if (err != null) {
+            return res.status(400).send(`Write Error: ${error}`);
+        }
+        return res.status(200).send(`Write successful. Message: ${message}`);
     });
 });
 
