@@ -7,8 +7,8 @@
             "uid_3": true,
             "uid_11": true
         },
-        "self-messsages": ["I like my style choices", "I'm good at coding"],
-        "other-messages": ["You have good hair", "I like the way you yell"]
+        "self_messsages": ["I like my style choices", "I'm good at coding"],
+        "other_messages": ["You have good hair", "I like the way you yell"]
     },
     "uid_1": {
         "name": "Jane Doe",
@@ -19,7 +19,7 @@
             "uid_11": true,
             "uid_12": true
         },
-        "self-messsages": ["I like my vscode theme"],
-        "other-messages": ["You have good hair", "I like the way you cook"]
+        "self_messsages": ["I like my vscode theme"],
+        "other_messages": ["You have good hair", "I like the way you cook"]
     }
 }

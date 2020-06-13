@@ -25,6 +25,7 @@ app.get('/profile', (req, res) => {
     });
 });
 
+// '/random-friend' endpoint takes a self_id and returns a random friend profile.
 app.get('/random-friend', (req, res) => {
     const selfID = req.query.self_id;
     if (selfID == null) {
@@ -62,6 +63,33 @@ app.get('/random-friend', (req, res) => {
                     return res.status(200).json(snapshot.val());
                 });
         });
+});
+
+// '/random-message' takes a self_id and returns a random message from other_messages
+app.get('/random-message', (req, res) => {
+    const selfID = req.query.self_id;
+    if (selfID == null) {
+        return res.status(400).send('Bad Request: self_id is not provided.');
+    }
+    const userRef = db.ref(`/users/${selfID}`);
+    userRef.once('value').then((snapshot) => {
+        if (!snapshot.exists()) {
+            // couldn't find user with uid
+            return res.status(404).send(`No user found with id ${selfID}`);
+        }
+        const selfProfile = snapshot.val();
+        // see ../odm.json if confused about the profile's structure
+        const otherMessages = selfProfile.other_messages;
+        const messageIDs = Object.keys(otherMessages);
+        if (messageIDs.length == 0) {
+            return res
+                .status(404)
+                .send(`User ${selfID} does not have any other_messages`);
+        }
+        const randomMessageID =
+            messageIDs[(messageIDs.length * Math.random()) << 0];
+        return res.status(200).send(otherMessages[randomMessageID]);
+    });
 });
 
 app.listen(port, () =>

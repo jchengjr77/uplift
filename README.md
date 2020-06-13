@@ -36,7 +36,7 @@ GET request for profile:
 GET request for random friend:
 `GET /random-friend?self_id=123`
 
-GET request for random other-message:
+GET request for random other_message:
 `GET/random-message?self_id=123`
 
 POST request for self-messages:
