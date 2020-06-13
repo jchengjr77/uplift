@@ -56,3 +56,8 @@ POST request for removing a friend:
 
 POST request for creating new user:
 `POST /new-user {username, email}`
+
+## Key Colors
+
+Off-White: F8F1FF
+Lavender: A46DDB
