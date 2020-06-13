@@ -4,7 +4,7 @@ const fire = require('./firebase');
 const app = express();
 
 const db = fire.database();
-const auth = fire.auth();
+const { default_other_messages } = require('./defaults');
 
 const port = 3000;
 
@@ -216,6 +216,34 @@ app.post('/remove-friend/:self_uid/:friend_uid', async (req, res) => {
             .status(200)
             .send(`Success. Removed friendship ${selfID} to ${friendID}`);
     });
+});
+
+// ! Creating a new user should come with nice defaults.
+// NOTE: autopopulate the other_messages field with appropriate starter comments
+app.post('/new-user', (req, res) => {
+    const username = req.body.username;
+    const email = req.body.email;
+    if (username == null || email == null) {
+        return res
+            .status(400)
+            .send('Bad Request: Please provide both username and email');
+    }
+    const usersRef = db.ref('/users');
+    usersRef.push(
+        {
+            name: username,
+            email: email,
+            other_messages: default_other_messages,
+        },
+        (err) => {
+            if (err != null) {
+                return res.status(400).send(`Initialization Error: ${err}`);
+            }
+            return res
+                .status(200)
+                .send(`Success. Added user ${username} to Uplift`);
+        }
+    );
 });
 
 app.listen(port, () =>
