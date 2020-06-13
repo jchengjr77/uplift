@@ -30,32 +30,26 @@ Deployment: Google Cloud (Firebase)
 
 ## Endpoints
 
-GET request for self-messages:
-`GET /self`
-
-GET request for other-messages:
-`GET /other`
-
-GET request for friends:
-`GET /friends`
+GET request for profile:
+`GET /profile?self_id=123`
 
 GET request for random friend:
-`GET /random-friend`
+`GET /random-friend?self_id=123`
 
 GET request for random other-message:
-`GET/random-message`
+`GET/random-message?self_id=123`
 
 POST request for self-messages:
-`POST /to-self {message}`
+`POST /to-self/$self_id {message}`
 
 POST request for other-messages:
 `POST /to/$uid {message}`
 
 POST request for adding a friend:
-`POST /add-friend/$self-uid/$friend-uid`
+`POST /add-friend/$self_uid/$friend_uid`
 
 POST request for removing a friend:
-`POST /remove-friend/$self-uid/$friend-uid`
+`POST /remove-friend/$self_uid/$friend_uid`
 
 POST request for creating new user:
 `POST /new-user {username, email}`
@@ -64,9 +58,9 @@ POST request for creating new user:
 
 Off-White: ![#F8F1FF](https://placehold.it/15/F8F1FF/000000?text=+) `#F8F1FF`
 
-Purple: ![#A46DDB](https://placehold.it/15/A46DDB/000000?text=+) `#A46DDB`
+Lavender: ![#A46DDB](https://placehold.it/15/A46DDB/000000?text=+) `#A46DDB`
 
-Lavender: ![#B8A7CA](https://placehold.it/15/B8A7CA/000000?text=+) `#B8A7CA`
+Periwinkle: B8A7CA
 
 ## Design
 
