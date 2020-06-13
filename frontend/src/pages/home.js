@@ -4,7 +4,7 @@ import TopBar from "../components/topbar";
 import { TextField, Fade } from "@material-ui/core";
 import ResponsiveButton from "../components/responsivebutton";
 
-function Home() {
+function Home(props) {
   const [inspiration, getInspiration] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [input, setInput] = useState("");
@@ -18,7 +18,7 @@ function Home() {
   }
   return (
     <div className="PageContainer">
-      <TopBar />
+      <TopBar to={props.to} />
       <div className="HomePageContainer">
         {" "}
         <TextField

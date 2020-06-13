@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import ResponsiveButton from "./responsivebutton";
 import LoginModal from "./loginmodal";
 import SignupModal from "./signupmodal";
 import "../App.css";
 
-function TopBar() {
+function TopBar(props) {
+  const url = props.to === "profile" ? "/profile" : "/"
   const [auth, setAuth] = useState(false);
   const [login, setLogin] = useState(false);
   const [signup, setSignup] = useState(false);
@@ -33,17 +35,23 @@ function TopBar() {
         authenticate={() => setAuth(true)}
       />
       <div className="TRButtonContainer">
-        <ResponsiveButton
-          text={auth ? "profile" : "login"}
-          className="TopRightButton"
-          onClick={() => {
-            if (!auth) {
-              setLogin(true);
-            } else {
-              console.log("test");
-            }
-          }}
-        />
+        {auth ? (
+          <Link to={url} style={{ textDecoration: "none" }}>
+            <ResponsiveButton text={props.to} className="TopRightButton" />
+          </Link>
+        ) : (
+          <ResponsiveButton
+            text="login"
+            className="TopRightButton"
+            onClick={() => {
+              if (!auth) {
+                setLogin(true);
+              } else {
+                return <Link to="/profile" />;
+              }
+            }}
+          />
+        )}
       </div>
     </div>
   );

@@ -8,8 +8,6 @@ import {
   TextField,
   Button
 } from "@material-ui/core";
-import { flexbox } from "@material-ui/system";
-// import { auth } from '../fire';
 
 function LoginModal(props) {
   const [email, setEmail] = useState("");

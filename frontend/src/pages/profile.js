@@ -37,7 +37,7 @@ function friendsFromUid(friendsList) {
   return ret.sort();
 }
 
-function Profile() {
+function Profile(props) {
   const friendsList_Uid = Object.keys(data.uid_0.friends);
   let friendsList = friendsFromUid(friendsList_Uid);
   const classes = useStyles();
@@ -45,7 +45,7 @@ function Profile() {
   return (
     <ThemeProvider theme = {theme}>
       <div className="PageContainer" theme={theme}>
-        <TopBar />.
+        <TopBar to={props.to} />
         <div className="ProfileContainer">
           <div className="NameContainer">name: {data.uid_0.name}</div>
           <div className="EmailContainer">email: {data.uid_0.email}</div>

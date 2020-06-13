@@ -8,7 +8,6 @@ import {
   TextField,
   Button
 } from "@material-ui/core";
-// import { auth } from '../fire';
 
 function SignupModal(props) {
   const [email, setEmail] = useState("");
