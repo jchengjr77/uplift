@@ -1,0 +1,64 @@
+.PageContainer {
+  text-align: center;
+  background-color: #f8f1ff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.TopBar {
+  display: flex;
+  flex-direction: row;
+  padding-top: 3vh;
+  padding-bottom: 10vh;
+}
+
+.LogoContainer {
+  display: flex;
+  flex-direction: row;
+  font-size: min(15vw, 15vh);
+  align-self: center;
+  padding-left: 35vw;
+}
+
+.LeftLogoText {
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
+    Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-weight: 200;
+  color: #a46ddb;
+}
+
+.RightLogoText {
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
+    Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-weight: 200;
+  color: #908789;
+}
+
+.TRButtonContainer {
+  padding-left: 25vw;
+  align-self: center;
+}
+
+.TopRightButton {
+  height: 5vw !important;
+  width: 10vw;
+  font-size: 30px !important;
+  font-weight: 300 !important;
+  color: #A46DDB !important;
+  border-color: #A46DDB !important;
+}
+
+.TopRightButton:hover {
+  background-color: #A46DDB !important;
+  color: #f8f1ff !important;
+}
+
+.BodyContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: red;
+  min-height: 40vh;
+}
