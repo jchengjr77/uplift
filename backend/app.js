@@ -140,6 +140,44 @@ app.post('/to/:uid', (req, res) => {
     });
 });
 
+// 'add-friend' takes self_id and friend_id, checks for existence, then adds friendship.
+app.post('/add-friend/:self_uid/:friend_uid', async (req, res) => {
+    const selfID = req.params.self_uid;
+    const friendID = req.params.friend_uid;
+    if (selfID == null || friendID == null) {
+        return res
+            .status(400)
+            .send('Bad Request: Please provide both self_uid and friend_uid');
+    }
+
+    // Check self_uid exists
+    const selfSnapshot = await db.ref(`/users/${selfID}`).once('value');
+    if (!selfSnapshot.exists()) {
+        return res
+            .status(404)
+            .send(`Invalid Self: No user found with self_uid ${selfID}`);
+    }
+
+    // Check friend_uid exists
+    const friendSnapshot = await db.ref(`/users/${friendID}`).once('value');
+    if (!friendSnapshot.exists()) {
+        return res
+            .status(404)
+            .send(`Invalid Friend: No user found with friend_uid ${friendID}`);
+    }
+
+    // This newFriendRef shouldn't exist before this.
+    const newFriendRef = db.ref(`/users/${selfID}/friends/${friendID}`);
+    newFriendRef.set(true, (err) => {
+        if (err != null) {
+            return res.status(400).send(`Write Error: ${error}`);
+        }
+        return res
+            .status(200)
+            .send(`Success. Added friendship ${selfID} to ${friendID}`);
+    });
+});
+
 app.listen(port, () =>
     console.log(`Example app listening at http://localhost:${port}`)
 );
