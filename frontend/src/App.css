@@ -40,18 +40,25 @@
   width: max(10vw, 15vh);
   align-self: center;
   position: absolute;
-  right: 2%; 
+  right: 2%;
 }
 
 .TopRightButton {
-  color: #A46DDB !important;
-  border-color: #A46DDB !important;
+  color: #a46ddb !important;
+  border-color: #a46ddb !important;
 }
 
+.TopRightButton:active,
 .TopRightButton:hover {
-  background-color: #A46DDB !important;
+  background-color: #a46ddb !important;
   color: #f8f1ff !important;
 }
+
+.TopRightButton:focus { 
+  box-shadow: none !important;
+}
+
+
 
 .BodyContainer {
   display: flex;

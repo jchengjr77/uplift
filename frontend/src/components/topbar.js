@@ -36,7 +36,7 @@ function TopBar() {
         <div className="LeftLogoText">up</div>
         <div className="RightLogoText">lift</div>
       </div>
-      <div className="TRButtonContainer">
+      <div className="TRButtonContainer shadow-none">
         <Button
           outline
           size={height*.75 < width ? "lg" : "sm"}
