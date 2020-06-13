@@ -1,4 +1,6 @@
 .PageContainer {
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
+    Helvetica, Arial, "Lucida Grande", sans-serif;
   text-align: center;
   background-color: #f8f1ff;
   min-height: 100vh;
@@ -11,7 +13,6 @@
   display: flex;
   flex-direction: row;
   padding-top: 3vh;
-  padding-bottom: 10vh;
   align-items: space-between;
 }
 
@@ -23,15 +24,11 @@
 }
 
 .LeftLogoText {
-  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
-    Helvetica, Arial, "Lucida Grande", sans-serif;
   font-weight: 200;
   color: #a46ddb;
 }
 
 .RightLogoText {
-  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
-    Helvetica, Arial, "Lucida Grande", sans-serif;
   font-weight: 200;
   color: #908789;
 }
@@ -58,12 +55,92 @@
   box-shadow: none !important;
 }
 
-
-
 .BodyContainer {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  color: red;
-  min-height: 40vh;
+  justify-content: left;
+  min-height: 5vh;
+}
+
+.ProfileContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  min-height: 5vh;
+  width: max(30vw, 40vh);
+  align-items: flex-start;
+}
+
+
+.NameContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  color: #A46DDB;
+  font-size: min(4vw, 4vh);
+  min-height: 5vh;
+}
+
+.EmailContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  color: #A46DDB;
+  font-size: min(4vw, 4vh);
+}
+
+.FriendsText {
+  color: #A46DDB;
+  font-size: min(4vw, 4vh);
+}
+
+.FriendsContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  color: #A46DDB;
+  font-size: min(5vw, 5vh);
+  min-width: 100%;
+  min-height: 20vh;
+}
+
+.FriendsBox {
+  min-height: 100%;
+}
+.AMButtonContainer {
+  display: flex;
+  flex-direction: column;
+  width: max(15vw, 20vh);
+  padding-top: 1vh
+}
+
+.AllMessagesButton {
+  color: #a46ddb !important;
+  border-color: #a46ddb !important;
+  background-color: #f8f1ff !important;
+}
+
+.AllMessagesButton:active,
+.AllMessagesButton:hover {
+  background-color: #a46ddb !important;
+  color: #f8f1ff !important;
+}
+
+.LogoutButtonContainer {
+  display: flex;
+  flex-direction: column;
+  width: max(10vw, 15vh);
+  padding-top: 1vh;
+}
+
+.LogoutButton {
+  color: #a46ddb !important;
+  border-color: #a46ddb !important;
+  background-color: #f8f1ff !important;
+}
+
+.LogoutButton:active,
+.LogoutButton:hover {
+  background-color: #a46ddb !important;
+  color: #f8f1ff !important;
 }
