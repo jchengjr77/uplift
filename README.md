@@ -22,7 +22,7 @@ The Ultimate Self Love Platform.
 
 Frontend: React
 
-Backend: Flask (Python)
+Backend: Node.js (express)
 
 Database: Firebase
 
@@ -30,32 +30,26 @@ Deployment: Google Cloud (Firebase)
 
 ## Endpoints
 
-GET request for self-messages:
-`GET /self`
-
-GET request for other-messages:
-`GET /other`
-
-GET request for friends:
-`GET /friends`
+GET request for profile:
+`GET /profile?uid=123`
 
 GET request for random friend:
-`GET /random-friend`
+`GET /random-friend?self_id=123`
 
-GET request for random other-message:
-`GET/random-message`
+GET request for random other_message:
+`GET/random-message?self_id=123`
 
 POST request for self-messages:
-`POST /to-self {message}`
+`POST /to-self/$self_id {message}`
 
 POST request for other-messages:
 `POST /to/$uid {message}`
 
 POST request for adding a friend:
-`POST /add-friend/$self-uid/$friend-uid`
+`POST /add-friend/$self_uid/$friend_uid`
 
 POST request for removing a friend:
-`POST /remove-friend/$self-uid/$friend-uid`
+`POST /remove-friend/$self_uid/$friend_uid`
 
 POST request for creating new user:
 `POST /new-user {username, email}`
@@ -64,7 +58,7 @@ POST request for creating new user:
 
 Off-White: ![#F8F1FF](https://placehold.it/15/F8F1FF/000000?text=+) `#F8F1FF`
 
-Purple: ![#A46DDB](https://placehold.it/15/A46DDB/000000?text=+) `#A46DDB`
+Lavender: ![#A46DDB](https://placehold.it/15/A46DDB/000000?text=+) `#A46DDB`
 
 Gray: ![#908789](https://placehold.it/15/908789/000000?text=+) `#908789`
 
