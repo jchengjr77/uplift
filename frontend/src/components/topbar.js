@@ -6,7 +6,7 @@ import SignupModal from "./signupmodal";
 import "../App.css";
 
 function TopBar(props) {
-  const url = props.to === "profile" ? "/profile" : "/"
+  const url = props.to === "profile" ? "/profile" : "/";
   const [auth, setAuth] = useState(false);
   const [login, setLogin] = useState(false);
   const [signup, setSignup] = useState(false);
@@ -44,11 +44,7 @@ function TopBar(props) {
             text="login"
             className="TopRightButton"
             onClick={() => {
-              if (!auth) {
-                setLogin(true);
-              } else {
-                return <Link to="/profile" />;
-              }
+              setLogin(true);
             }}
           />
         )}
