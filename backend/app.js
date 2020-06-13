@@ -9,11 +9,11 @@ const port = 3000;
 
 app.get('/', (req, res) => res.send('Hello from Uplift!'));
 
-// '/self' endpoint takes a user id and attempts to return its profile.
-app.get('/self', (req, res) => {
-    const uid = req.query.self_id;
+// '/profile' endpoint takes a user id and attempts to return its profile.
+app.get('/profile', (req, res) => {
+    const uid = req.query.uid;
     if (uid == null) {
-        return res.status(400).send('Bad Request: self_id is not provided.');
+        return res.status(400).send('Bad Request: uid is not provided.');
     }
     const userRef = db.ref(`/users/${uid}`);
     userRef.once('value').then((snapshot) => {
@@ -24,6 +24,8 @@ app.get('/self', (req, res) => {
         return res.status(200).json(snapshot.val());
     });
 });
+
+app.get('/other');
 
 app.listen(port, () =>
     console.log(`Example app listening at http://localhost:${port}`)

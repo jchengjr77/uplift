@@ -22,7 +22,7 @@ The Ultimate Self Love Platform.
 
 Frontend: React
 
-Backend: Flask (Python)
+Backend: Node.js (express)
 
 Database: Firebase
 
@@ -31,7 +31,7 @@ Deployment: Google Cloud (Firebase)
 ## Endpoints
 
 GET request for profile:
-`GET /profile?self_id=123`
+`GET /profile?uid=123`
 
 GET request for random friend:
 `GET /random-friend?self_id=123`
