@@ -67,3 +67,9 @@ Off-White: ![#F8F1FF](https://placehold.it/15/F8F1FF/000000?text=+) `#F8F1FF`
 Lavender: ![#A46DDB](https://placehold.it/15/A46DDB/000000?text=+) `#A46DDB`
 
 Periwinkle: B8A7CA
+
+## Design
+
+![home](design/images/home.png)
+![profile](design/images/profile.png)
+![messages](design/images/messages.png)
