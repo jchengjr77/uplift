@@ -204,3 +204,9 @@
   background-color: #a46ddb !important;
   color: #f8f1ff !important;
 }
+
+.MessageContainer {
+  min-width: 100vw;
+  display: flex;
+  justify-content: space-between;
+}
