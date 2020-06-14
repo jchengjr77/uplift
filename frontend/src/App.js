@@ -7,29 +7,34 @@ import auth from "./fire";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
+  const [loaded, setLoaded] = useState(false);
+
   useEffect(() => {
     auth.onAuthStateChanged(user => {
       if (user) {
         setLoggedIn(true);
-        setCurrentUser(user);
+        setLoaded(true);
       } else {
         setLoggedIn(false);
-        setCurrentUser(null);
+        setLoaded(true);
       }
     });
-  });
+  }, [auth.currentUser]);
+
+  if (!loaded) {
+    return <div />;
+  }
   return (
     <Router>
       <Switch>
         <Route exact path="/">
-          <Home to="profile" isAuthed={loggedIn} user={currentUser} />
+          <Home to="profile" isAuthed={loggedIn} />
         </Route>
         <Route path="/profile">
-          <Profile to="home" isAuthed={loggedIn} user={currentUser} />
+          <Profile to="home" isAuthed={loggedIn} />
         </Route>
         <Route path="/messages">
-          <Messages to="home" isAuthed={loggedIn} user={currentUser} />
+          <Messages to="home" isAuthed={loggedIn} />
         </Route>
       </Switch>
     </Router>

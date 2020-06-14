@@ -7,6 +7,7 @@ import {
   createMuiTheme,
   ThemeProvider
 } from "@material-ui/core/styles";
+import { useHistory } from "react-router-dom";
 
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;
@@ -53,7 +54,11 @@ const useStyles = makeStyles(theme => ({
 
 function Messages(props) {
   const [profile, setProfile] = useState({});
+  const history = useHistory();
   useEffect(() => {
+    if (!props.isAuthed) {
+      history.push("/");
+    }
     const fetchProfile = async () => {
       try {
         const response = await fetch("/profile?uid=0").then(res => res.json());
@@ -124,7 +129,6 @@ function Messages(props) {
                   overflow: "auto",
                   width: horizontal ? "35vw" : "70vw"
                 }}
-                boxShadow={0}
               >
                 <div className="FriendsContainer">
                   <List className={classes.list}>messages from friends:</List>
