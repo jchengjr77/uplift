@@ -50,7 +50,7 @@ function Profile(props) {
         const fetchProfile = async () => {
             try {
                 const response = await fetch(
-                    `/profile?uid=${auth.currentUser.uid}`
+                    `/api/profile?uid=${auth.currentUser.uid}`
                 );
                 const res = await response.json();
                 if (mounted) {
