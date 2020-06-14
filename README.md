@@ -7,8 +7,6 @@ https://devpost.com/software/uplift-f1jie3
 
 Anna Lulushi - [alulushi1026](https://github.com/alulushi1026)
 
-Jeff Li - [voidJeff](https://github.com/voidJeff)
-
 [Sean Prendi](https://www.seanprendi.me/#/) - [seanprendi](https://github.com/seanprendi)
 
 [JJ Cheng](https://jjcheng.me) - [jchengjr77](https://github.com/jchengjr77)
