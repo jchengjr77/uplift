@@ -58,7 +58,7 @@ POST request for creating new user:
 
 Off-White: ![#F8F1FF](https://placehold.it/15/F8F1FF/000000?text=+) `#F8F1FF`
 
-Lavender: ![#A46DDB](https://placehold.it/15/A46DDB/000000?text=+) `#A46DDB`
+Purple: ![#A46DDB](https://placehold.it/15/A46DDB/000000?text=+) `#A46DDB`
 
 Gray: ![#908789](https://placehold.it/15/908789/000000?text=+) `#908789`
 
