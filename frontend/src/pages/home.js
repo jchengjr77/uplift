@@ -49,8 +49,6 @@ function Home(props) {
 async function sendSelfMessage() {
   try {
     //const uid = auth.currentUser.uid;
-    console.log(input);
-    console.log(JSON.stringify(input))
     const uid = 0;
     fetch(`/to-self/${uid}`, {
       method: 'POST',
@@ -87,12 +85,10 @@ async function sendFriendMessage() {
 
   function submit() {
     if (submitted) {
-      sendFriendMessage();
+      if(input !== "") sendFriendMessage();
       getRandomFriend()
     }
-    else {
-      sendSelfMessage();
-    }
+    else if(input !== "") sendSelfMessage();
     setSubmitted(!submitted);
     setInput("");
   }
