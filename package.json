@@ -1,11 +1,22 @@
 {
-    "name": "uplift",
-    "description": "The Ultimate Self-Love Platform",
-    "version": "1.0.0",
-    "engines": {
-        "node": "12.x"
-    },
-    "scripts": {
-        "start": "cd backend && npm start"
-    }
+  "name": "uplift",
+  "description": "The Ultimate Self-Love Platform",
+  "version": "1.0.0",
+  "engines": {
+    "node": "12.x"
+  },
+  "scripts": {
+    "start": "cd backend && npm start"
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jchengjr77/uplift.git"
+  },
+  "author": "JJ Cheng",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jchengjr77/uplift/issues"
+  },
+  "homepage": "https://github.com/jchengjr77/uplift#readme"
 }
