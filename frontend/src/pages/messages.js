@@ -68,7 +68,7 @@ function Messages(props) {
       }
     };
     fetchProfile();
-  }, []);
+  }, [history, props.isAuthed]);
 
   const { height, width } = useWindowDimensions();
   const horizontal = height < width;
