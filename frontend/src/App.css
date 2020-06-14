@@ -178,12 +178,14 @@
   color: #a46ddb !important;
   border-color: #a46ddb !important;
   background-color: #f8f1ff !important;
+  box-shadow: none !important;
 }
 
 .AllMessagesButton:active,
 .AllMessagesButton:hover {
   background-color: #a46ddb !important;
   color: #f8f1ff !important;
+  box-shadow: none !important;
 }
 
 .LogoutButtonContainer {
@@ -197,12 +199,14 @@
   color: #a46ddb !important;
   border-color: #a46ddb !important;
   background-color: #f8f1ff !important;
+  box-shadow: none !important;
 }
 
 .LogoutButton:active,
 .LogoutButton:hover {
   background-color: #a46ddb !important;
   color: #f8f1ff !important;
+  box-shadow: none !important;
 }
 
 .MessageContainer {

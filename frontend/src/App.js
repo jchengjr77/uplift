@@ -34,7 +34,7 @@ function App() {
           <Profile to="home" isAuthed={loggedIn} />
         </Route>
         <Route path="/messages">
-          <Messages to="home" isAuthed={loggedIn} />
+          <Messages to="profile" isAuthed={loggedIn} />
         </Route>
       </Switch>
     </Router>

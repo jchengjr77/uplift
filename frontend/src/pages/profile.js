@@ -49,11 +49,11 @@ function Profile(props) {
     let mounted = true;
     const fetchProfile = async () => {
       try {
-        const response = await fetch("/profile?uid=0");
+        const response = await fetch(`/profile?uid=${auth.currentUser.uid}`);
         const res = await response.json();
         if (mounted) {
           setProfile(res);
-          setFriendsList(res.friends)
+          setFriendsList(Object.values(res.friends) || []);
         }
       } catch (e) {
         console.error(e);
@@ -72,7 +72,7 @@ function Profile(props) {
           <div className="EmailContainer">email: {profile.email}</div>
           <div className="FriendsText">friends:</div>
           <div className={classes.root}>
-            <Paper style={{ maxHeight: 200, overflow: "auto" }} boxShadow={0}>
+            <Paper style={{ maxHeight: 200, overflow: "auto" }}>
               <div className="FriendsContainer">
                 <List className={classes.list}>
                   {/* eslint-disable-next-line array-callback-return */}
@@ -89,7 +89,7 @@ function Profile(props) {
               </div>
             </Paper>
           </div>
-          <Link to="/messages">
+          <Link to="/messages" style={{ textDecoration: "none" }}>
             <div className="AMButtonContainer">
               <Button className="AllMessagesButton">all messages</Button>
             </div>

@@ -8,6 +8,7 @@ import {
   ThemeProvider
 } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
+import auth from "../fire"
 
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;
@@ -61,7 +62,7 @@ function Messages(props) {
     }
     const fetchProfile = async () => {
       try {
-        const response = await fetch("/profile?uid=0").then(res => res.json());
+        const response = await fetch(`/profile?uid=${auth.currentUser.uid}`).then(res => res.json());
         setProfile(response);
       } catch (e) {
         console.error(e);
@@ -69,7 +70,7 @@ function Messages(props) {
     };
     fetchProfile();
   }, [history, props.isAuthed]);
-
+  
   const { height, width } = useWindowDimensions();
   const horizontal = height < width;
   const classes = useStyles();
