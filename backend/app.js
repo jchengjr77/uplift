@@ -167,8 +167,17 @@ app.post('/add-friend/:self_uid/:friend_uid', async (req, res) => {
     }
 
     // This newFriendRef shouldn't exist before this.
+    const friendName = await friendSnapshot.val().name;
     const newFriendRef = db.ref(`/users/${selfID}/friends/${friendID}`);
-    newFriendRef.set(true, (err) => {
+    newFriendRef.set(friendName, (err) => {
+        if (err != null) {
+            return res.status(400).send(`Write Error: ${error}`);
+        }
+    });
+
+    const backFriendRef = db.ref(`/users/${friendID}/friends/${selfID}`);
+    const backFriendName = await selfSnapshot.val().name;
+    backFriendRef.set(backFriendName, (err) => {
         if (err != null) {
             return res.status(400).send(`Write Error: ${error}`);
         }
