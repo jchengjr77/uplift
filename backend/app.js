@@ -140,14 +140,14 @@ app.post('/to/:uid', (req, res) => {
     });
 });
 
-// 'add-friend' takes self_id and friend_id, checks for existence, then adds friendship.
-app.post('/add-friend/:self_uid/:friend_uid', async (req, res) => {
+// 'add-friend' takes self_id and friend_email, checks for existence, then adds friendship.
+app.post('/add-friend/:self_uid', async (req, res) => {
     const selfID = req.params.self_uid;
-    const friendID = req.params.friend_uid;
-    if (selfID == null || friendID == null) {
+    const friendEmail = req.body.friend_email;
+    if (selfID == null || friendEmail == null) {
         return res
             .status(400)
-            .send('Bad Request: Please provide both self_uid and friend_uid');
+            .send('Bad Request: Please provide both self_uid and friend_email');
     }
 
     // Check self_uid exists
@@ -158,17 +158,39 @@ app.post('/add-friend/:self_uid/:friend_uid', async (req, res) => {
             .send(`Invalid Self: No user found with self_uid ${selfID}`);
     }
 
-    // Check friend_uid exists
-    const friendSnapshot = await db.ref(`/users/${friendID}`).once('value');
+    // Check friend_email exists
+    const usersRef = await db.ref('/users');
+    const friendSnapshot = await usersRef
+        .orderByChild('email')
+        .equalTo(friendEmail)
+        .once('value');
     if (!friendSnapshot.exists()) {
         return res
             .status(404)
-            .send(`Invalid Friend: No user found with friend_uid ${friendID}`);
+            .send(
+                `Invalid Friend: No user found with friend_email ${friendEmail}`
+            );
     }
 
     // This newFriendRef shouldn't exist before this.
+    let friend = await friendSnapshot.val();
+    if (friend.length > 1) {
+        friend = friend[1];
+    } else {
+        friend = friend[0];
+    }
+    const friendName = await friend.name;
+    const friendID = await Object.keys(friendSnapshot.val())[0];
     const newFriendRef = db.ref(`/users/${selfID}/friends/${friendID}`);
-    newFriendRef.set(true, (err) => {
+    newFriendRef.set(friendName, (err) => {
+        if (err != null) {
+            return res.status(400).send(`Write Error: ${error}`);
+        }
+    });
+
+    const backFriendRef = db.ref(`/users/${friendID}/friends/${selfID}`);
+    const backFriendName = await selfSnapshot.val().name;
+    backFriendRef.set(backFriendName, (err) => {
         if (err != null) {
             return res.status(400).send(`Write Error: ${error}`);
         }
@@ -223,16 +245,18 @@ app.post('/remove-friend/:self_uid/:friend_uid', async (req, res) => {
 app.post('/new-user', (req, res) => {
     const username = req.body.username;
     const email = req.body.email;
-    if (username == null || email == null) {
+    const uid = req.body.uid;
+    if (username == null || email == null || uid == null) {
         return res
             .status(400)
-            .send('Bad Request: Please provide both username and email');
+            .send('Bad Request: Please provide username, email, and uid');
     }
     const usersRef = db.ref('/users');
-    usersRef.push(
+    usersRef.child(uid).set(
         {
             name: username,
             email: email,
+            uid: uid,
             other_messages: default_other_messages,
         },
         (err) => {
