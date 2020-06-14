@@ -1,6 +1,7 @@
 # Uplift
 
 Built for Same Home Different Hacks hackathon (MLH, Devpost).
+https://devpost.com/software/uplift-f1jie3
 
 ## Team
 
