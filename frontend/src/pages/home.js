@@ -46,9 +46,52 @@ function Home(props) {
     }
   }
 
+async function sendSelfMessage() {
+  try {
+    //const uid = auth.currentUser.uid;
+    console.log(input);
+    console.log(JSON.stringify(input))
+    const uid = 0;
+    fetch(`/to-self/${uid}`, {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        message: input
+      })
+    });
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+async function sendFriendMessage() {
+  try {
+    //const uid = randomFriend.uid;
+    const uid = 1;
+    fetch(`/to/${uid}`, {
+      method: `POST`,
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        message: input
+      })
+    });
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+
   function submit() {
     if (submitted) {
+      sendFriendMessage();
       getRandomFriend()
+    }
+    else {
+      sendSelfMessage();
     }
     setSubmitted(!submitted);
     setInput("");
