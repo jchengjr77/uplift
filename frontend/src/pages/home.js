@@ -3,6 +3,7 @@ import "../App.css";
 import TopBar from "../components/topbar";
 import { TextField, Fade } from "@material-ui/core";
 import ResponsiveButton from "../components/responsivebutton";
+import auth from "../fire";
 
 function Home(props) {
   const fadeTime = 1000; // Fade time in ms
@@ -13,13 +14,17 @@ function Home(props) {
   const [randomFriend, setRandomFriend] = useState({});
   const [randomMessage, setRandomMessage] = useState("");
   const selfText = "today, i love my...";
-  const elseText = `today, i love ${randomFriend.name}'s...`;
+  const noFriends =
+    randomFriend.name === undefined || randomFriend.name === null;
+  const elseText = noFriends
+    ? "add some friends to say what you love about them!"
+    : `today, i love ${randomFriend.name}'s...`;
 
   async function getRandomFriend() {
     try {
-      const response = await fetch("/random-friend?self_id=0").then(res =>
-        res.json()
-      );
+      const response = await fetch(
+        `/random-friend?self_id=${auth.currentUser.uid}`
+      ).then(res => res.json());
       setRandomFriend(response);
     } catch (e) {
       console.error(e);
@@ -28,7 +33,9 @@ function Home(props) {
 
   async function getRandomMessage() {
     try {
-      const response = await fetch("/random-message?self_id=0");
+      const response = await fetch(
+        `/random-message?self_id=${auth.currentUser.uid}`
+      );
       response.text().then(res => setRandomMessage(res));
     } catch (e) {
       console.error(e);
@@ -46,70 +53,73 @@ function Home(props) {
     }
   }
 
-async function sendSelfMessage() {
-  try {
-    //const uid = auth.currentUser.uid;
-    const uid = 0;
-    fetch(`/to-self/${uid}`, {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        message: input
-      })
-    });
-  } catch (e) {
-    console.error(e);
+  async function sendSelfMessage() {
+    try {
+      const uid = auth.currentUser.uid;
+      fetch(`/to-self/${uid}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          message: input
+        })
+      });
+    } catch (e) {
+      console.error(e);
+    }
   }
-}
 
-async function sendFriendMessage() {
-  try {
-    //const uid = randomFriend.uid;
-    const uid = 1;
-    fetch(`/to/${uid}`, {
-      method: `POST`,
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        message: input
-      })
-    });
-  } catch (e) {
-    console.error(e);
+  async function sendFriendMessage() {
+    try {
+      const uid = randomFriend.uid;
+      fetch(`/to/${uid}`, {
+        method: `POST`,
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          message: input
+        })
+      });
+    } catch (e) {
+      console.error(e);
+    }
   }
-}
-
 
   function submit() {
-    if (submitted) {
-      if(input !== "") sendFriendMessage();
-      getRandomFriend()
+    if (!props.isAuthed) {
+      alert("Log in to say what you love about yourself!");
+      return;
     }
-    else if(input !== "") sendSelfMessage();
-    setSubmitted(!submitted);
-    setInput("");
+    if (input !== "") {
+      if (submitted) {
+        sendFriendMessage();
+        getRandomFriend();
+      } else sendSelfMessage();
+      setSubmitted(!submitted);
+      setInput("");
+    }
   }
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const response = await fetch("/profile?uid=0");
-        const res = await response.json();
-        setProfile(res);
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    fetchProfile();
+    if (props.isAuthed) {
+      const fetchProfile = async () => {
+        try {
+          const response = await fetch(`/profile?uid=${auth.currentUser.uid}`);
+          const res = await response.json();
+          setProfile(res);
+        } catch (e) {
+          console.error(e);
+        }
+      };
+      fetchProfile();
 
-    getRandomFriend();
+      getRandomFriend();
 
-    getRandomMessage();
+      getRandomMessage();
+    }
   }, [props.isAuthed]);
-
 
   return (
     <div className="PageContainer">
@@ -120,6 +130,7 @@ async function sendFriendMessage() {
           id="standard-basic"
           fullWidth
           placeholder={submitted ? elseText : selfText}
+          disabled={submitted && noFriends}
           value={input}
           onChange={event => setInput(event.target.value)}
           onKeyPress={e => {

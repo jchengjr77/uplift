@@ -16,20 +16,19 @@ function SignupModal(props) {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
-  function createUser() {
+  async function createUser() {
     const body = JSON.stringify({
       username: name,
       email: email,
       uid: auth.currentUser.uid
     });
-    const response = fetch("/new-user", {
+    const response = await fetch("/new-user", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: body
     });
-    return response.json();
   }
   const canSignup =
     email !== "" &&
@@ -41,8 +40,6 @@ function SignupModal(props) {
     password === confirm && password.length >= 8 && confirm.length >= 8;
 
   function attemptSignup() {
-    console.log(email);
-    console.log(password);
     auth
       .createUserWithEmailAndPassword(email, password)
       .then(() => {
@@ -52,8 +49,7 @@ function SignupModal(props) {
         setConfirm("");
         setInvalidEmail(false);
         props.authenticate();
-        createUser();
-        props.close();
+        createUser().then(() => props.close());
       })
       .catch(error => {
         if (error.code === "auth/invalid-email") {

@@ -7,9 +7,26 @@ import {
   TextField,
   Button
 } from "@material-ui/core";
+import auth from "../fire";
 
 function AddFriendModal(props) {
   const [email, setEmail] = useState("");
+
+  async function addNewFriend() {
+    const body = JSON.stringify({
+      friend_email: email
+    });
+    const response = await fetch(`/add-friend/${auth.currentUser.uid}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: body
+    });
+    console.log(response.text());
+    return response;
+  }
+
   return (
     <div style={{ width: "3vw" }}>
       <Dialog
@@ -33,6 +50,8 @@ function AddFriendModal(props) {
             }}
             onKeyPress={ev => {
               if (ev.key === "Enter") {
+                addNewFriend();
+                props.close();
                 ev.preventDefault();
               }
             }}
@@ -48,7 +67,14 @@ function AddFriendModal(props) {
           >
             Cancel
           </Button>
-          <Button onClick={props.close}>Add Friend</Button>
+          <Button
+            onClick={() => {
+              addNewFriend();
+              props.close();
+            }}
+          >
+            Add Friend
+          </Button>
         </DialogActions>
       </Dialog>
     </div>
