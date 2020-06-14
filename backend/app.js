@@ -163,6 +163,7 @@ app.post('/add-friend/:self_uid', async (req, res) => {
     const friendSnapshot = await usersRef
         .orderByChild('email')
         .equalTo(friendEmail)
+        .limitToLast(1)
         .once('value');
     if (!friendSnapshot.exists()) {
         return res
@@ -174,13 +175,9 @@ app.post('/add-friend/:self_uid', async (req, res) => {
 
     // This newFriendRef shouldn't exist before this.
     let friend = await friendSnapshot.val();
-    if (friend.length > 1) {
-        friend = friend[1];
-    } else {
-        friend = friend[0];
-    }
-    const friendName = await friend.name;
-    const friendID = await Object.keys(friendSnapshot.val())[0];
+    const friendID = Object.keys(friend)[0];
+    const friendName = friendSnapshot.child(friendID).val().name;
+
     const newFriendRef = db.ref(`/users/${selfID}/friends/${friendID}`);
     newFriendRef.set(friendName, (err) => {
         if (err != null) {
