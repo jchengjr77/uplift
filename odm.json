@@ -1,23 +1,24 @@
 {
     "uid_0": {
         "name": "John Doe",
+        "uid": 0,
         "email": "johndoe@gmail.com",
         "friends": {
-            "uid_1": true,
-            "uid_3": true,
-            "uid_11": true
+            "uid_1": "Jane Doe",
+            "uid_3": "Josh Doe",
+            "uid_11": "Cotton Eye Joe"
         },
         "self_messsages": ["I like my style choices", "I'm good at coding"],
         "other_messages": ["You have good hair", "I like the way you yell"]
     },
     "uid_1": {
         "name": "Jane Doe",
+        "uid": 1,
         "email": "janedoe@gmail.com",
         "friends": {
-            "uid_0": true,
-            "uid_3": true,
-            "uid_11": true,
-            "uid_12": true
+            "uid_1": "John Doe",
+            "uid_3": "Josh Doe",
+            "uid_11": "Cotton Eye Joe"
         },
         "self_messsages": ["I like my vscode theme"],
         "other_messages": ["You have good hair", "I like the way you cook"]
