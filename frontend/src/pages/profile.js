@@ -53,6 +53,7 @@ function Profile(props) {
         const res = await response.json();
         if (mounted) {
           setProfile(res);
+          setFriendsList(res.friends)
         }
       } catch (e) {
         console.error(e);
@@ -74,6 +75,7 @@ function Profile(props) {
             <Paper style={{ maxHeight: 200, overflow: "auto" }} boxShadow={0}>
               <div className="FriendsContainer">
                 <List className={classes.list}>
+                  {/* eslint-disable-next-line array-callback-return */}
                   {friendsList.map((friend, idx) => {
                     if (friend !== null && friend !== undefined) {
                       return (

@@ -19,7 +19,7 @@ function App() {
         setLoaded(true);
       }
     });
-  }, [auth.currentUser]);
+  }, []);
 
   if (!loaded) {
     return <div />;
