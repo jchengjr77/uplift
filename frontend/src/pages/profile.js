@@ -9,7 +9,7 @@ import {
   createMuiTheme,
   ThemeProvider
 } from "@material-ui/core/styles";
-import data from "../data/data.json";
+import { useHistory } from "react-router-dom";
 import AddFriendModal from "../components/addfriendmodal";
 import auth from "../fire";
 
@@ -37,20 +37,29 @@ function Profile(props) {
   const classes = useStyles();
   const [profile, setProfile] = useState({ friends: [] });
   const [addFriend, setAddFriend] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
+    if (!props.isAuthed) {
+      history.push("/");
+    }
+  });
+
+  useEffect(() => {
+    let mounted = true;
     const fetchProfile = async () => {
       try {
-        const response = await fetch("/profile?uid=0").then(res => res.json());
-        return response;
+        const response = await fetch("/profile?uid=0");
+        const res = await response.json();
+        if (mounted) {
+          setProfile(res);
+        }
       } catch (e) {
         console.error(e);
       }
     };
-    fetchProfile().then(res => {
-      setProfile(res);
-      setFriendsList(Object.values(res.friends));
-    });
+    fetchProfile();
+    return () => (mounted = false);
   }, []);
 
   return (
@@ -93,7 +102,13 @@ function Profile(props) {
             </Button>
           </div>
           <div className="LogoutButtonContainer">
-            <Button className="LogoutButton" onClick={auth.signOut}>
+            <Button
+              className="LogoutButton"
+              onClick={() => {
+                auth.signOut();
+                history.push("/");
+              }}
+            >
               log out
             </Button>
           </div>

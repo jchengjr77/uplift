@@ -5,11 +5,11 @@ import { TextField, Fade } from "@material-ui/core";
 import ResponsiveButton from "../components/responsivebutton";
 
 function Home(props) {
-  const fadeTime = 1000 // Fade time in ms
+  const fadeTime = 1000; // Fade time in ms
   const [inspiration, setInspiration] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [input, setInput] = useState("");
-  const [profile, setProfile] = useState({});
+  const [, setProfile] = useState({});
   const [randomFriend, setRandomFriend] = useState({});
   const [randomMessage, setRandomMessage] = useState("");
   const selfText = "today, i love my...";
@@ -40,7 +40,7 @@ function Home(props) {
       setInspiration(false);
       await new Promise(r => setTimeout(r, fadeTime)).then(() => {
         getRandomMessage().then(() => setInspiration(true));
-      })
+      });
     } else {
       setInspiration(true);
     }
@@ -48,7 +48,7 @@ function Home(props) {
 
   function submit() {
     if (submitted) {
-      getRandomFriend()
+      getRandomFriend();
     }
     setSubmitted(!submitted);
     setInput("");
@@ -57,8 +57,9 @@ function Home(props) {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await fetch("/profile?uid=0").then(res => res.json());
-        setProfile(response);
+        const response = await fetch("/profile?uid=0");
+        const res = await response.json();
+        setProfile(res);
       } catch (e) {
         console.error(e);
       }
@@ -68,7 +69,8 @@ function Home(props) {
     getRandomFriend();
 
     getRandomMessage();
-  }, []);
+  }, [props.isAuthed]);
+
 
   return (
     <div className="PageContainer">
@@ -92,7 +94,13 @@ function Home(props) {
             <ResponsiveButton
               text="get inspiration"
               className="InspirationButton"
-              onClick={getInspiration}
+              onClick={
+                props.isAuthed
+                  ? getInspiration
+                  : () => {
+                      alert("Login to hear what others love about you!");
+                    }
+              }
             />
           </div>
           <div className="InputRightButton">
