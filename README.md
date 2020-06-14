@@ -46,7 +46,7 @@ POST request for other-messages:
 `POST /to/$uid {message}`
 
 POST request for adding a friend:
-`POST /add-friend/$self_uid/$friend_uid`
+`POST /add-friend/$self_uid {friend_email}`
 
 POST request for removing a friend:
 `POST /remove-friend/$self_uid/$friend_uid`
