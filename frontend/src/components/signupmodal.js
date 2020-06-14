@@ -1,204 +1,212 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-  TextField,
-  Button
-} from "@material-ui/core";
-import auth from "../fire";
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+    DialogActions,
+    TextField,
+    Button,
+} from '@material-ui/core';
+import auth from '../fire';
 
 function SignupModal(props) {
-  const [email, setEmail] = useState("");
-  const [invalidEmail, setInvalidEmail] = useState("");
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirm, setConfirm] = useState("");
-  async function createUser() {
-    const body = JSON.stringify({
-      username: name,
-      email: email,
-      uid: auth.currentUser.uid
-    });
-    fetch("/new-user", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: body
-    });
-  }
-  const canSignup =
-    email !== "" &&
-    password === confirm &&
-    password.length >= 8 &&
-    confirm.length >= 8 &&
-    name !== "";
-  const goodPass =
-    password === confirm && password.length >= 8 && confirm.length >= 8;
+    const [email, setEmail] = useState('');
+    const [invalidEmail, setInvalidEmail] = useState('');
+    const [name, setName] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirm, setConfirm] = useState('');
+    async function createUser() {
+        const body = JSON.stringify({
+            username: name,
+            email: email,
+            uid: auth.currentUser.uid,
+        });
+        fetch('/api/new-user', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: body,
+        });
+    }
+    const canSignup =
+        email !== '' &&
+        password === confirm &&
+        password.length >= 8 &&
+        confirm.length >= 8 &&
+        name !== '';
+    const goodPass =
+        password === confirm && password.length >= 8 && confirm.length >= 8;
 
-  function attemptSignup() {
-    auth
-      .createUserWithEmailAndPassword(email, password)
-      .then(() => {
-        setEmail("");
-        setName("");
-        setPassword("");
-        setConfirm("");
-        setInvalidEmail(false);
-        props.authenticate();
-        createUser().then(() => props.close());
-      })
-      .catch(error => {
-        if (error.code === "auth/invalid-email") {
-          setEmail("");
-          setInvalidEmail(true);
-        } else {
-          setEmail("");
-          setInvalidEmail(true);
-        }
-      });
-  }
+    function attemptSignup() {
+        auth.createUserWithEmailAndPassword(email, password)
+            .then(() => {
+                setEmail('');
+                setName('');
+                setPassword('');
+                setConfirm('');
+                setInvalidEmail(false);
+                props.authenticate();
+                createUser().then(() => props.close());
+            })
+            .catch((error) => {
+                if (error.code === 'auth/invalid-email') {
+                    setEmail('');
+                    setInvalidEmail(true);
+                } else {
+                    setEmail('');
+                    setInvalidEmail(true);
+                }
+            });
+    }
 
-  return (
-    <Dialog
-      open={props.open}
-      onClose={() => {
-        setEmail("");
-        setName("");
-        setPassword("");
-        setConfirm("");
-        setInvalidEmail(false);
-        props.close();
-      }}
-    >
-      <DialogTitle>Sign Up</DialogTitle>
-      <DialogContent>
-        <DialogContentText
-          style={{ display: canSignup ? "none" : "inline", color: "#ED3434" }}
+    return (
+        <Dialog
+            open={props.open}
+            onClose={() => {
+                setEmail('');
+                setName('');
+                setPassword('');
+                setConfirm('');
+                setInvalidEmail(false);
+                props.close();
+            }}
         >
-          All fields are required.{" "}
-        </DialogContentText>
-        <DialogContentText
-          style={{ display: goodPass ? "none" : "inline", color: "#ED3434" }}
-        >
-          Passwords must match and be at least 8 characters.
-        </DialogContentText>
-        <DialogContentText
-          style={{ display: !goodPass ? "none" : "inline", color: "#1D800E" }}
-        >
-          Password is valid.
-        </DialogContentText>
-        <br />
-        <DialogContentText
-          style={{
-            display: !invalidEmail ? "none" : "inline",
-            color: "#ED3434"
-          }}
-        >
-          Invalid Email
-        </DialogContentText>
-        <TextField
-          autoFocus
-          margin="dense"
-          label="Name"
-          type="name"
-          fullWidth
-          onChange={e => {
-            setName(e.target.value);
-          }}
-          onKeyPress={ev => {
-            if (ev.key === "Enter" && canSignup) {
-              attemptSignup();
-              ev.preventDefault();
-            }
-          }}
-          value={name}
-        />
-        <TextField
-          margin="dense"
-          label="Email"
-          type="email"
-          fullWidth
-          onChange={e => {
-            setEmail(e.target.value);
-          }}
-          onKeyPress={ev => {
-            if (ev.key === "Enter" && canSignup) {
-              attemptSignup();
-              ev.preventDefault();
-            }
-          }}
-          value={email}
-        />
-        <TextField
-          margin="dense"
-          label="Password"
-          type="password"
-          fullWidth
-          onChange={p => {
-            setPassword(p.target.value);
-          }}
-          onKeyPress={ev => {
-            if (ev.key === "Enter" && canSignup) {
-              attemptSignup();
-              ev.preventDefault();
-            }
-          }}
-          value={password}
-        />
-        <TextField
-          margin="dense"
-          label="Confirm Password"
-          type="password"
-          fullWidth
-          onChange={p => {
-            setConfirm(p.target.value);
-          }}
-          onKeyPress={ev => {
-            if (ev.key === "Enter" && canSignup) {
-              attemptSignup();
-              ev.preventDefault();
-            }
-          }}
-          value={confirm}
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button
-          onClick={() => {
-            setEmail("");
-            setName("");
-            setPassword("");
-            setConfirm("");
-            setInvalidEmail(false);
-            props.close();
-          }}
-        >
-          Cancel
-        </Button>
-        <Button onClick={attemptSignup} disabled={!canSignup}>
-          Sign Up
-        </Button>
-      </DialogActions>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "center",
-          paddingBottom: "2vh"
-        }}
-      >
-        <div>Already have an account?</div>
-        <button className="LinkText" onClick={props.login}>
-          Login
-        </button>
-      </div>
-    </Dialog>
-  );
+            <DialogTitle>Sign Up</DialogTitle>
+            <DialogContent>
+                <DialogContentText
+                    style={{
+                        display: canSignup ? 'none' : 'inline',
+                        color: '#ED3434',
+                    }}
+                >
+                    All fields are required.{' '}
+                </DialogContentText>
+                <DialogContentText
+                    style={{
+                        display: goodPass ? 'none' : 'inline',
+                        color: '#ED3434',
+                    }}
+                >
+                    Passwords must match and be at least 8 characters.
+                </DialogContentText>
+                <DialogContentText
+                    style={{
+                        display: !goodPass ? 'none' : 'inline',
+                        color: '#1D800E',
+                    }}
+                >
+                    Password is valid.
+                </DialogContentText>
+                <br />
+                <DialogContentText
+                    style={{
+                        display: !invalidEmail ? 'none' : 'inline',
+                        color: '#ED3434',
+                    }}
+                >
+                    Invalid Email
+                </DialogContentText>
+                <TextField
+                    autoFocus
+                    margin='dense'
+                    label='Name'
+                    type='name'
+                    fullWidth
+                    onChange={(e) => {
+                        setName(e.target.value);
+                    }}
+                    onKeyPress={(ev) => {
+                        if (ev.key === 'Enter' && canSignup) {
+                            attemptSignup();
+                            ev.preventDefault();
+                        }
+                    }}
+                    value={name}
+                />
+                <TextField
+                    margin='dense'
+                    label='Email'
+                    type='email'
+                    fullWidth
+                    onChange={(e) => {
+                        setEmail(e.target.value);
+                    }}
+                    onKeyPress={(ev) => {
+                        if (ev.key === 'Enter' && canSignup) {
+                            attemptSignup();
+                            ev.preventDefault();
+                        }
+                    }}
+                    value={email}
+                />
+                <TextField
+                    margin='dense'
+                    label='Password'
+                    type='password'
+                    fullWidth
+                    onChange={(p) => {
+                        setPassword(p.target.value);
+                    }}
+                    onKeyPress={(ev) => {
+                        if (ev.key === 'Enter' && canSignup) {
+                            attemptSignup();
+                            ev.preventDefault();
+                        }
+                    }}
+                    value={password}
+                />
+                <TextField
+                    margin='dense'
+                    label='Confirm Password'
+                    type='password'
+                    fullWidth
+                    onChange={(p) => {
+                        setConfirm(p.target.value);
+                    }}
+                    onKeyPress={(ev) => {
+                        if (ev.key === 'Enter' && canSignup) {
+                            attemptSignup();
+                            ev.preventDefault();
+                        }
+                    }}
+                    value={confirm}
+                />
+            </DialogContent>
+            <DialogActions>
+                <Button
+                    onClick={() => {
+                        setEmail('');
+                        setName('');
+                        setPassword('');
+                        setConfirm('');
+                        setInvalidEmail(false);
+                        props.close();
+                    }}
+                >
+                    Cancel
+                </Button>
+                <Button onClick={attemptSignup} disabled={!canSignup}>
+                    Sign Up
+                </Button>
+            </DialogActions>
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    paddingBottom: '2vh',
+                }}
+            >
+                <div>Already have an account?</div>
+                <button className='LinkText' onClick={props.login}>
+                    Login
+                </button>
+            </div>
+        </Dialog>
+    );
 }
 
 export default SignupModal;

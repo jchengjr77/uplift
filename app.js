@@ -1,22 +1,28 @@
 const express = require('express');
+const path = require('path');
 const bodyParser = require('body-parser');
 const fire = require('./firebase');
 const app = express();
 
+const CLIENT_BUILD_PATH = path.join(__dirname, './frontend/build');
+
+// Serve static files from the React app
+app.use(express.static(path.join(CLIENT_BUILD_PATH)));
+
 const db = fire.database();
 const { default_other_messages } = require('./defaults');
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 /* __________ Begin GET requests __________ */
 
-app.get('/', (req, res) => res.send('Hello from Uplift!'));
+app.get('/api', (req, res) => res.send('Hello from Uplift!'));
 
 // '/profile' endpoint takes a user id and attempts to return its profile.
-app.get('/profile', (req, res) => {
+app.get('/api/profile', (req, res) => {
     const uid = req.query.uid;
     if (uid == null) {
         return res.status(400).send('Bad Request: uid is not provided.');
@@ -32,7 +38,7 @@ app.get('/profile', (req, res) => {
 });
 
 // '/random-friend' endpoint takes a self_id and returns a random friend profile.
-app.get('/random-friend', (req, res) => {
+app.get('/api/random-friend', (req, res) => {
     const selfID = req.query.self_id;
     if (selfID == null) {
         return res.status(400).send('Bad Request: self_id is not provided.');
@@ -72,7 +78,7 @@ app.get('/random-friend', (req, res) => {
 });
 
 // '/random-message' takes a self_id and returns a random message from other_messages
-app.get('/random-message', (req, res) => {
+app.get('/api/random-message', (req, res) => {
     const selfID = req.query.self_id;
     if (selfID == null) {
         return res.status(400).send('Bad Request: self_id is not provided.');
@@ -101,7 +107,7 @@ app.get('/random-message', (req, res) => {
 /* __________ Begin POST requests __________ */
 
 // 'to-self' endpoint takes a self_id and a message, and writes self_messages.
-app.post('/to-self/:self_id', (req, res) => {
+app.post('/api/to-self/:self_id', (req, res) => {
     const selfID = req.params.self_id;
     const message = req.body.message;
     console.log(`Received selfID=${selfID}, message: ${message}`);
@@ -121,7 +127,7 @@ app.post('/to-self/:self_id', (req, res) => {
 });
 
 // 'to' endpoint takes a uid and a message, and writes it to other_messages.
-app.post('/to/:uid', (req, res) => {
+app.post('/api/to/:uid', (req, res) => {
     const uid = req.params.uid;
     const message = req.body.message;
     console.log(`Received uid=${uid}, message: ${message}`);
@@ -141,7 +147,7 @@ app.post('/to/:uid', (req, res) => {
 });
 
 // 'add-friend' takes self_id and friend_email, checks for existence, then adds friendship.
-app.post('/add-friend/:self_uid', async (req, res) => {
+app.post('/api/add-friend/:self_uid', async (req, res) => {
     const selfID = req.params.self_uid;
     const friendEmail = req.body.friend_email;
     if (selfID == null || friendEmail == null) {
@@ -174,13 +180,8 @@ app.post('/add-friend/:self_uid', async (req, res) => {
 
     // This newFriendRef shouldn't exist before this.
     let friend = await friendSnapshot.val();
-    if (friend.length > 1) {
-        friend = friend[1];
-    } else {
-        friend = friend[0];
-    }
-    const friendName = await friend.name;
-    const friendID = await Object.keys(friendSnapshot.val())[0];
+    const friendID = Object.keys(friend)[0];
+    const friendName = friendSnapshot.child(friendID).val().name;
     const newFriendRef = db.ref(`/users/${selfID}/friends/${friendID}`);
     newFriendRef.set(friendName, (err) => {
         if (err != null) {
@@ -201,7 +202,7 @@ app.post('/add-friend/:self_uid', async (req, res) => {
 });
 
 // 'remove-friend' endpoint takes self_id and friend_id, verifies existence, then attempts to remove the friendship (one way)
-app.post('/remove-friend/:self_uid/:friend_uid', async (req, res) => {
+app.post('/api/remove-friend/:self_uid/:friend_uid', async (req, res) => {
     const selfID = req.params.self_uid;
     const friendID = req.params.friend_uid;
     if (selfID == null || friendID == null) {
@@ -242,7 +243,7 @@ app.post('/remove-friend/:self_uid/:friend_uid', async (req, res) => {
 
 // ! Creating a new user should come with nice defaults.
 // NOTE: autopopulate the other_messages field with appropriate starter comments
-app.post('/new-user', (req, res) => {
+app.post('/api/new-user', (req, res) => {
     const username = req.body.username;
     const email = req.body.email;
     const uid = req.body.uid;
@@ -268,6 +269,12 @@ app.post('/new-user', (req, res) => {
                 .send(`Success. Added user ${username} to Uplift`);
         }
     );
+});
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+    res.sendFile(path.join(CLIENT_BUILD_PATH, 'index.html'));
 });
 
 app.listen(port, () =>
