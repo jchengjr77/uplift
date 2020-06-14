@@ -1,0 +1,10 @@
+{
+    "name": "Uplift",
+    "description": "The Ultimate Self-Love Platform.",
+    "repository": "https://github.com/jchengjr77/uplift",
+    "buildpacks": [
+        {
+            "url": "heroku/nodejs"
+        }
+    ]
+}
