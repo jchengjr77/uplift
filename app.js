@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const fire = require('./firebase');
 const app = express();
 
-const CLIENT_BUILD_PATH = path.join(__dirname, '../frontend/build');
+const CLIENT_BUILD_PATH = path.join(__dirname, './frontend/build');
 
 // Serve static files from the React app
 app.use(express.static(path.join(CLIENT_BUILD_PATH)));

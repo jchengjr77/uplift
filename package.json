@@ -1,22 +1,21 @@
 {
-  "name": "uplift",
-  "description": "The Ultimate Self-Love Platform",
-  "version": "1.0.0",
-  "engines": {
-    "node": "12.x"
-  },
-  "scripts": {
-    "start": "cd backend && npm start"
-  },
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jchengjr77/uplift.git"
-  },
-  "author": "JJ Cheng",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/jchengjr77/uplift/issues"
-  },
-  "homepage": "https://github.com/jchengjr77/uplift#readme"
+    "name": "backend",
+    "version": "1.0.0",
+    "description": "Backend for Uplift (hackathon)",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node app.js",
+        "dev": "nodemon app.js"
+    },
+    "author": "JJ Cheng",
+    "license": "ISC",
+    "dependencies": {
+        "body-parser": "^1.19.0",
+        "express": "^4.17.1",
+        "firebase": "^7.15.1"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.4"
+    }
 }
