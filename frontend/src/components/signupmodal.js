@@ -22,7 +22,7 @@ function SignupModal(props) {
       email: email,
       uid: auth.currentUser.uid
     });
-    const response = await fetch("/new-user", {
+    fetch("/new-user", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
