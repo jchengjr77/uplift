@@ -52,7 +52,7 @@ POST request for removing a friend:
 `POST /remove-friend/$self_uid/$friend_uid`
 
 POST request for creating new user:
-`POST /new-user {username, email}`
+`POST /new-user {username, email, uid}`
 
 ## Key Colors
 

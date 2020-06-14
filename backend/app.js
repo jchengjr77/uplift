@@ -140,7 +140,7 @@ app.post('/to/:uid', (req, res) => {
     });
 });
 
-// 'add-friend' takes self_id and friend_id, checks for existence, then adds friendship.
+// 'add-friend' takes self_id and friend_email, checks for existence, then adds friendship.
 app.post('/add-friend/:self_uid', async (req, res) => {
     const selfID = req.params.self_uid;
     const friendEmail = req.body.friend_email;
@@ -245,16 +245,18 @@ app.post('/remove-friend/:self_uid/:friend_uid', async (req, res) => {
 app.post('/new-user', (req, res) => {
     const username = req.body.username;
     const email = req.body.email;
-    if (username == null || email == null) {
+    const uid = req.body.uid;
+    if (username == null || email == null || uid == null) {
         return res
             .status(400)
-            .send('Bad Request: Please provide both username and email');
+            .send('Bad Request: Please provide username, email, and uid');
     }
     const usersRef = db.ref('/users');
-    usersRef.push(
+    usersRef.child(uid).set(
         {
             name: username,
             email: email,
+            uid: uid,
             other_messages: default_other_messages,
         },
         (err) => {
