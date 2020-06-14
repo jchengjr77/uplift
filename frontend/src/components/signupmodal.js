@@ -8,6 +8,7 @@ import {
   TextField,
   Button
 } from "@material-ui/core";
+import auth from "../fire";
 
 function SignupModal(props) {
   const [email, setEmail] = useState("");
@@ -15,6 +16,21 @@ function SignupModal(props) {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
+  function createUser() {
+    const body = JSON.stringify({
+      username: name,
+      email: email,
+      uid: auth.currentUser.uid
+    });
+    const response = fetch("/new-user", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: body
+    });
+    return response.json();
+  }
   const canSignup =
     email !== "" &&
     password === confirm &&
@@ -25,13 +41,29 @@ function SignupModal(props) {
     password === confirm && password.length >= 8 && confirm.length >= 8;
 
   function attemptSignup() {
-    setEmail("");
-    setName("");
-    setPassword("");
-    setConfirm("");
-    setInvalidEmail(false);
-    props.authenticate();
-    props.close();
+    console.log(email);
+    console.log(password);
+    auth
+      .createUserWithEmailAndPassword(email, password)
+      .then(() => {
+        setEmail("");
+        setName("");
+        setPassword("");
+        setConfirm("");
+        setInvalidEmail(false);
+        props.authenticate();
+        createUser();
+        props.close();
+      })
+      .catch(error => {
+        if (error.code === "auth/invalid-email") {
+          setEmail("");
+          setInvalidEmail(true);
+        } else {
+          setEmail("");
+          setInvalidEmail(true);
+        }
+      });
   }
 
   return (
@@ -90,7 +122,6 @@ function SignupModal(props) {
           value={name}
         />
         <TextField
-          autoFocus
           margin="dense"
           label="Email"
           type="email"
@@ -166,7 +197,9 @@ function SignupModal(props) {
         }}
       >
         <div>Already have an account?</div>
-        <button className="LinkText" onClick={props.login}>Login</button>
+        <button className="LinkText" onClick={props.login}>
+          Login
+        </button>
       </div>
     </Dialog>
   );

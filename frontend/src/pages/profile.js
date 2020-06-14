@@ -1,19 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "../App.css";
 import TopBar from "../components/topbar";
+import { Link } from "react-router-dom";
 import { Button } from "reactstrap";
 import { List, ListItem, ListItemText, Paper } from "@material-ui/core";
 import {
   makeStyles,
   createMuiTheme,
-  ThemeProvider,
+  ThemeProvider
 } from "@material-ui/core/styles";
-import data from "../data/data.json";
+import { useHistory } from "react-router-dom";
+import AddFriendModal from "../components/addfriendmodal";
+import auth from "../fire";
 
 const theme = createMuiTheme({
-  shadows: ["none"],
+  shadows: ["none"]
 });
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     width: "100%",
     maxWidth: 360,
@@ -21,55 +24,95 @@ const useStyles = makeStyles((theme) => ({
     borderColor: "#a46ddb !important",
     borderWidth: 1,
     borderStyle: "solid",
-    shadows: ["none"],
+    shadows: ["none"]
   },
   list: {
     borderColor: "#a46ddb !important",
-    borderWidth: 1,
-  },
+    borderWidth: 1
+  }
 }));
 
-function friendsFromUid(friendsList) {
-  let ret = [];
-  friendsList.forEach((friend) => {
-    ret.push(data[friend].name);
-  });
-  return ret.sort();
-}
-
 function Profile(props) {
-  const friendsList_Uid = Object.keys(data.uid_0.friends);
-  let friendsList = friendsFromUid(friendsList_Uid);
+  const [friendsList, setFriendsList] = useState([]);
   const classes = useStyles();
+  const [profile, setProfile] = useState({ friends: [] });
+  const [addFriend, setAddFriend] = useState(false);
+  const history = useHistory();
+
+  useEffect(() => {
+    if (!props.isAuthed) {
+      history.push("/");
+    }
+  });
+
+  useEffect(() => {
+    let mounted = true;
+    const fetchProfile = async () => {
+      try {
+        const response = await fetch("/profile?uid=0");
+        const res = await response.json();
+        if (mounted) {
+          setProfile(res);
+          setFriendsList(res.friends)
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchProfile();
+    return () => (mounted = false);
+  }, []);
 
   return (
-    <ThemeProvider theme = {theme}>
+    <ThemeProvider theme={theme}>
       <div className="PageContainer" theme={theme}>
-        <TopBar to={props.to} />
+        <TopBar to={props.to} isAuthed={props.isAuthed} />
         <div className="ProfileContainer">
-          <div className="NameContainer">name: {data.uid_0.name}</div>
-          <div className="EmailContainer">email: {data.uid_0.email}</div>
+          <div className="NameContainer">name: {profile.name}</div>
+          <div className="EmailContainer">email: {profile.email}</div>
           <div className="FriendsText">friends:</div>
           <div className={classes.root}>
             <Paper style={{ maxHeight: 200, overflow: "auto" }} boxShadow={0}>
               <div className="FriendsContainer">
                 <List className={classes.list}>
+                  {/* eslint-disable-next-line array-callback-return */}
                   {friendsList.map((friend, idx) => {
-                    return (
-                      <ListItem key={idx}>
-                        <ListItemText primary={friend} />
-                      </ListItem>
-                    );
+                    if (friend !== null && friend !== undefined) {
+                      return (
+                        <ListItem key={idx}>
+                          <ListItemText primary={friend} />
+                        </ListItem>
+                      );
+                    }
                   })}
                 </List>
               </div>
             </Paper>
           </div>
+          <Link to="/messages">
+            <div className="AMButtonContainer">
+              <Button className="AllMessagesButton">all messages</Button>
+            </div>
+          </Link>
+          <AddFriendModal open={addFriend} close={() => setAddFriend(false)} />
           <div className="AMButtonContainer">
-            <Button className="AllMessagesButton">all messages</Button>
+            <Button
+              className="AllMessagesButton"
+              onClick={() => setAddFriend(true)}
+            >
+              add a friend
+            </Button>
           </div>
           <div className="LogoutButtonContainer">
-            <Button className="LogoutButton">log out</Button>
+            <Button
+              className="LogoutButton"
+              onClick={() => {
+                auth.signOut();
+                history.push("/");
+              }}
+            >
+              log out
+            </Button>
           </div>
         </div>
       </div>

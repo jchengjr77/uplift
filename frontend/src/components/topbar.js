@@ -7,7 +7,7 @@ import "../App.css";
 
 function TopBar(props) {
   const url = props.to === "profile" ? "/profile" : "/";
-  const [auth, setAuth] = useState(false);
+  const [auth, setAuth] = useState(props.isAuthed);
   const [login, setLogin] = useState(false);
   const [signup, setSignup] = useState(false);
   return (

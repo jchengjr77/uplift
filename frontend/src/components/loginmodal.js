@@ -8,6 +8,7 @@ import {
   TextField,
   Button
 } from "@material-ui/core";
+import auth from "../fire";
 
 function LoginModal(props) {
   const [email, setEmail] = useState("");
@@ -15,11 +16,15 @@ function LoginModal(props) {
   const [enteredInvalid, setEnteredInvalid] = useState(false);
 
   function attemptLogin() {
-    setEnteredInvalid(false);
-    setEmail("");
-    setPassword("");
-    props.authenticate();
-    props.close();
+    auth.signInWithEmailAndPassword(email, password).then(() => {
+      setEnteredInvalid(false);
+      setEmail("");
+      setPassword("");
+      props.authenticate();
+      props.close();
+    }).catch(() => {
+      setEnteredInvalid(true);
+    })
   }
 
   return (
@@ -99,7 +104,9 @@ function LoginModal(props) {
         }}
       >
         <div>Don't have an account?</div>
-        <button className="LinkText" onClick={props.signup}>Signup</button>
+        <button className="LinkText" onClick={props.signup}>
+          Signup
+        </button>
       </div>
     </Dialog>
   );
